@@ -1,0 +1,75 @@
+#!/bin/bash
+
+rm -f raw.txt merged_clean.txt final.txt whitelist.txt
+
+# ===== list =====
+urls=(
+# =========== Hagezi- Multi PRO - Extended protection
+# ===  🟢 Domains Subdomains
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/pro.txt"
+# ===  🟢 Hosts
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/pro.txt"
+# ===  🔴 Hosts Compressed
+# "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/pro-compressed.txt"
+# ===  🟢 Adblock
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt"
+# ===  🟢 DNSMasq
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/dnsmasq/pro.txt"
+# ===  🟢 Wildcard Asterisk
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.txt"
+# ===  🟢 Wildcard Domains
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro-onlydomains.txt"
+# ===  🔴 RPZ
+# "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/rpz/pro.txt"
+# =========== END
+)
+
+# ===== download =====
+for url in "${urls[@]}"; do
+  curl -sL "$url" >> raw.txt
+  echo -e "\n" >> raw.txt
+done
+
+# ===== clean basic =====
+grep -vE '^\s*$' raw.txt | \
+grep -vE 'localhost|localdomain|broadcasthost' > cleaned.txt
+
+# ===== remove duplicate =====
+sort -u cleaned.txt > merged_clean.txt
+
+# ===== whitelist =====
+cat <<EOF > whitelist.txt
+# ==== WHITELIST ====
+# remove # to enable
+#@@||dns.google.com^$important
+#@@||cloudflare.com^$important
+#@@||cloudflare-dns.com^$important
+#@@||gstatic.com^$important
+@@||dnsforge.de^$important
+@@||mymax.top^$important
+@@||dnsz.in^$important
+@@||plusiptv.dnsz.in^$important
+@@||tvdns.top^$important
+@@||plusiptv.tvdns.top^$important
+@@||media-shop.top^$important
+@@||filimo.com^$important
+@@||namava.ir^$important
+@@||filmnet.ir^$important
+@@||snapp.site^$important
+@@||aptel.ir^$important
+@@||soft98.ir^$important
+#@@||github.com^$important
+#@@||tailscale.com^$important
+#@@||zerotier.com^$important
+#@@||goodcloud.xyz^$important
+#@@||astrowarp.net^$important
+#@@||youtubei.googleapis.com^$important
+EOF
+
+# ===== final =====
+cat whitelist.txt merged_clean.txt > final.txt
+
+mv final.txt merged.txt
+
+# ===== clean =====
+rm raw.txt cleaned.txt merged_clean.txt whitelist.txt
