@@ -41,10 +41,10 @@ sort -u cleaned.txt > merged_clean.txt
 cat <<EOF > whitelist.txt
 # ==== WHITELIST ====
 # remove # to enable
-#@@||dns.google.com^$important
-#@@||cloudflare.com^$important
-#@@||cloudflare-dns.com^$important
-#@@||gstatic.com^$important
+@@||dns.google.com^$important
+@@||cloudflare.com^$important
+@@||cloudflare-dns.com^$important
+@@||gstatic.com^$important
 @@||dnsforge.de^$important
 @@||mymax.top^$important
 @@||dnsz.in^$important
@@ -58,12 +58,12 @@ cat <<EOF > whitelist.txt
 @@||snapp.site^$important
 @@||aptel.ir^$important
 @@||soft98.ir^$important
-#@@||github.com^$important
-#@@||tailscale.com^$important
-#@@||zerotier.com^$important
-#@@||goodcloud.xyz^$important
-#@@||astrowarp.net^$important
-#@@||youtubei.googleapis.com^$important
+@@||github.com^$important
+@@||tailscale.com^$important
+@@||zerotier.com^$important
+@@||goodcloud.xyz^$important
+@@||astrowarp.net^$important
+@@||youtubei.googleapis.com^$important
 EOF
 
 # ===== final =====
